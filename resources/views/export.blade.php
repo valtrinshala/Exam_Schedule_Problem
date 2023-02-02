@@ -1,36 +1,48 @@
-<div>
-    <div class="flex justify-center">
-        <label
-            class="w-64 h-40
-        flex items-center justify-center bg-gray-50 rounded-md border border-primary-400 border-dashed">
-            <x:folder-plus class="mx-auto w-6 text-primary-400"/>
-            <input wire:model="file"
-                   type="file"
-                   class="sr-only"/>
-        </label>
-    </div>
-    <div class="flex flex-col gap-2 w-full px-2 max-h-screen">
-        @if(filled($file))
-            <div class="border-b  border-gray-200  bg-white ">
+<div class="space-y-8">
+
+    <x-import-file-input/>
+
+    {{--    @if(!filled($file))--}}
+    {{--        <div class="flex justify-center items-center bg-gray-50 m-12">--}}
+    {{--            <div class="text-lg mt-2">--}}
+    {{--                <p> Upload JSON File for Data Aggregation</p>--}}
+    {{--                <ul class="list-disc mt-2">--}}
+    {{--                    <li>Only valid JSON files accepted</li>--}}
+    {{--                    <li>Exam schedule data will be aggregated</li>--}}
+    {{--                    <li>Data will be summarized based on pre-defined rules</li>--}}
+    {{--                </ul>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    @endif--}}
+
+    <div class="flex flex-col gap-2 w-full max-h-screen">
+        @if(filled($courses))
+            <div class="border-b border-gray-200 ">
                 <x:table.table>
                     <x:slot name="header">
-                        <div class="flex flex-wrap justify-between pt-2 px-2 gap-2 items-center pb-2">
-                            <div class="text-gray-500 flex gap-2 w-8/12 min-w-max">
-                                    <span class="hidden md:block">
-                            Courses
-                        </span>
+                        <div class="flex flex-wrap pt-2 px-4 gap-2 items-center pb-2">
+                            <div class="text-gray-500 flex gap-2">
+                                <p class="hidden md:block">
+                                    Courses
+                                </p>
                             </div>
-                            <x:input class="border-0 bg-gray-100 w-72 pt-2 " type="search"
-                                     wire:model.debounce.500="query"
-                                     placeholder="Search table..."/>
-                            <button wire:click="export"
-                                    class="bg-transparent hover:bg-blue-500
-                 text-blue-700 font-semibold hover:text-white
-                  py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+
+                            <label class="ml-auto">
+                                <x:input class="border-0 bg-gray-100 w-72 pt-2 " type="search"
+                                         wire:model.debounce.500="query"
+                                         placeholder="Search table..."/>
+                            </label>
+
+                            <x-primary-button type="button" wire:click="export">
                                 Export
-                            </button>
+                            </x-primary-button>
+
+                            <x-secondary-button type="button" wire:click="clear">
+                                Clear
+                            </x-secondary-button>
                         </div>
                     </x:slot>
+
                     <x:table.thead :fields="$columns"/>
 
                     <x:table.tbody>

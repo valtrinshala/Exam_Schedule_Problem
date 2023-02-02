@@ -17,6 +17,7 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
+        "chart.js": "^4.2.0",
         "webpack": "^5.75.0"
     },
     "name": "example",

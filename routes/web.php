@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Livewire\Export as Export;
+use App\Http\Livewire\Charts as Charts;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,5 @@ use App\Http\Livewire\Export as Export;
 
 
 Route::get('/',Export::class)->name('export');
+Route::get('charts',Charts::class)->name('charts');
 

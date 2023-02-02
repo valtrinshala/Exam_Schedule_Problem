@@ -16,7 +16,6 @@ class Export extends Component
 
     public $file;
 
-
     public ?string $query = '';
 
     public array $courses = [];
@@ -27,6 +26,13 @@ class Export extends Component
 
     public int $maxSecondaryCount = 0;
 
+    public function mount()
+    {
+        $this->courses = cache('courses') ?? [];
+
+        $this->columns = cache('columns') ?? [];
+    }
+
     public function render()
     {
         return view('export');
@@ -35,6 +41,7 @@ class Export extends Component
     public function updatedFile()
     {
         $this->file->store('local');
+        session(['filePath' => $this->file->getRealPath()]);
 
         $data = json_decode(file_get_contents($this->file->getRealPath()), true);
 
@@ -46,9 +53,12 @@ class Export extends Component
             ->filter(fn($item, $course) => filled($course))
             ->toArray();
 
-        $this->getCourses(collect($data['Courses']), $curricula, $constraintsCount);
+        $this->mountCourses(collect($data['Courses']), $curricula, $constraintsCount);
 
         $this->mountColumns();
+
+        cache()->put('courses', $this->courses);
+        cache()->put('columns', $this->columns);
     }
 
     public function getFilteredCoursesProperty(): array
@@ -63,12 +73,21 @@ class Export extends Component
             ->toArray();
     }
 
+    public function clear()
+    {
+        $this->courses = [];
+        $this->columns = [];
+
+        cache()->forget('courses');
+        cache()->forget('columns');
+    }
+
     public function export()
     {
         return Excel::download(new CourseExport($this->filteredCourses, $this->columns, $this->getDefaultColumnsProperty()), 'courses.csv');
     }
 
-    protected function getCourses(Collection $courses, array $curricula, array $constraintsCount): array
+    protected function mountCourses(Collection $courses, array $curricula, array $constraintsCount): array
     {
         $this->courses = $courses->map(function (array $course) {
             $isMultiple = $course['ExamType'] === 'WrittenAndOral';
@@ -110,12 +129,13 @@ class Export extends Component
                     $roomForOral = $roomForOral ? 'True' : 'False';
                 }
 
+
                 return [
                     'event_id' => $key + 1,
                     'event_type' => $course['ExamType'],
                     'course_name' => $course['Course'],
                     'min_distance_between_exams' => $course['MinimumDistanceBetweenExams'] ?? '-',
-                    'number_of_exams' => $course['Course'],
+                    'number_of_exams' => $course['NumberOfExams'],
                     'rooms_requested_number' => $course['RoomsRequested']['Number'] ?? '-',
                     'rooms_requested_type' => $course['RoomsRequested']['Type'] ?? '-',
 
