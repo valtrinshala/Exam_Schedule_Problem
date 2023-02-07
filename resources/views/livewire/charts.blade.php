@@ -1,6 +1,6 @@
 <div>
 
-    <div class="my-12 my-2">
+    <div class="my-12 my-2 shadow-md rounded bg-gray-50 gap-1 px-3 py-3 ">
         <h2 class="text-xl font-bold">Aggregated Exam Schedule Data Visualization</h2>
         <p>The charts below display the aggregated exam schedule data based on the uploaded JSON file. The data has been
             summarized and visualized to provide a clearer overview of exam schedules.</p>
@@ -29,11 +29,11 @@
         </div>
 
         <div class="col-span-4 bg-white p-4 rounded-lg">
-            <h1 class="mb-4">Course Room Types</h1>
+            <h1 class="mb-4">Teacher Courses</h1>
             <div x-data="courseTypes({
             element:$refs.element,
-            labels:['Small', 'Medium', 'Large'],
-            data:@json($courseRoomTypes),
+            labels:['Written', 'Oral', 'WrittenAndOral'],
+            data:@json($courseTypes),
             })"
                  wire:key="{{ \Illuminate\Support\Str::random() }}"
                  class="w-full">
@@ -65,7 +65,6 @@
             labels:['Desired', 'Undesired', 'Forbidden', 'Preferred'],
             data:@json($coursesConstraintsLevel),
             })"
-                 wire:key="{{ \Illuminate\Support\Str::random() }}"
                  class="w-full">
                 <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
             </div>
@@ -78,9 +77,37 @@
             labels:['Oral', 'Written', 'WrittenAndOral'],
             data:@json($examTypes),
             })"
-                 wire:key="{{ \Illuminate\Support\Str::random() }}"
                  class="w-full">
                 <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
+            </div>
+        </div>
+
+        <div class="col-span-4 bg-white p-4 rounded-lg">
+            <h1 class="mb-4">Course Room Types</h1>
+            <div x-data="courseTypes({
+            element:$refs.element,
+            labels:['Small', 'Medium', 'Large'],
+            data:@json($courseRoomTypes),
+            })"
+                 class="w-full">
+                <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
+            </div>
+
+            <div class="flex items-center gap-4 mt-5">
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-red-500"></div>
+                    <span>Small</span>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-red-500"></div>
+                    <span>Medium</span>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-yellow-600"></div>
+                    <span>Large</span>
+                </div>
             </div>
         </div>
     </div>

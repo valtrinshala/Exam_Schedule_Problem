@@ -24,19 +24,21 @@ class Charts extends Component
 
     public array $examTypes = [];
 
+    public array $courseTypes = [];
+
     public function mount()
     {
         $filepath = session('filePath');
         $data = json_decode(file_get_contents($filepath), true);
 
-
-        $this->constraints =$data['Constraints'];
+        $this->constraints = $data['Constraints'];
         $this->teachers = $data['Teachers'];
         $this->courses = $data['Courses'];
 
         $this->mountCourseRoomTypes();
         $this->mountCoursesConstraintsLevel();
         $this->mountExamTypes();
+        $this->mountCourseTypes();
     }
 
     public function render()
@@ -59,6 +61,8 @@ class Charts extends Component
 //        $this->$coursesTeacher = Order::getYearOrders($this->selectedYear - 1)->groupByMonth();
 
         $this->emit('updateTheChart');
+
+        $this->mountCourseTypes();
     }
 
     protected function mountCourseRoomTypes()
@@ -90,6 +94,17 @@ class Charts extends Component
             collect($this->courses)->where('ExamType', 'Oral')->count(),
             collect($this->courses)->where('ExamType', 'Written')->count(),
             collect($this->courses)->where('ExamType', 'WrittenAndOral')->count(),
+        ];
+    }
+
+    protected function mountCourseTypes()
+    {
+        $teacherCourses = collect($this->courses)->where('Teacher', $this->selectedTeacher);
+
+        $this->courseTypes = [
+            $teacherCourses->where('ExamType', 'Written')->count(),
+            $teacherCourses->where('ExamType', 'Oral')->count(),
+            $teacherCourses->where('ExamType', 'WrittenAndOral')->count(),
         ];
     }
 }

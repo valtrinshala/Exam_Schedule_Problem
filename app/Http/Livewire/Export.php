@@ -20,6 +20,8 @@ class Export extends Component
 
     public array $courses = [];
 
+    public array $constraints = [];
+
     public array $columns = [];
 
     public int $maxPrimaryCount = 0;
@@ -46,9 +48,9 @@ class Export extends Component
         $data = json_decode(file_get_contents($this->file->getRealPath()), true);
 
         $curricula = $data['Curricula'];
-        $constraints = $data['Constraints'];
+        $this->constraints = $data['Constraints'];
 
-        $constraintsCount = collect($constraints)->groupBy('Course')
+        $constraintsCount = collect($this->constraints)->groupBy('Course')
             ->mapWithKeys(fn($items, $key) => [$key => $items->count()])
             ->filter(fn($item, $course) => filled($course))
             ->toArray();
@@ -129,6 +131,7 @@ class Export extends Component
                     $roomForOral = $roomForOral ? 'True' : 'False';
                 }
 
+                $constraint = collect($this->constraints)->where('Course', $course['Course'] ?? -1)->first();
 
                 return [
                     'event_id' => $key + 1,
@@ -145,9 +148,9 @@ class Export extends Component
                     'written_oral_specs_rom_for_oral' => $roomForOral ?? '-',
                     'written_oral_specs_same_day' => $course['WrittenOralSpecs']['SameDay'] ?? '-',
                     'constraints_count' => $constraintsCount[$courseId] ?? 0,
-                    'constraints_forbidden' => 'Constraints-EventPeriodConstraint-Forbidden',
-                    'constraints_undesired' => 'Constraints-EventPeriodConstraint-Undesired',
-                    'constraints_preferred' => 'Constraints-EventPeriodConstraint-Preferred',
+                    'constraints_forbidden' => ($constraint['Level'] ?? false) == 'Forbidden' ? 'True' : 'False',
+                    'constraints_undesired' =>  ($constraint['Level'] ?? false) == 'Undesired' ? 'True' : 'False',
+                    'constraints_preferred' => ($constraint['Level'] ?? false) == 'Preferred' ? 'True' : 'False',
 
                     'primary' => $primary,
                     'secondary' => $secondary,
