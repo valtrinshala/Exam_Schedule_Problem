@@ -63,7 +63,7 @@
             <div x-data="courseTypes({
             element:$refs.element,
             labels:['Desired', 'Undesired', 'Forbidden', 'Preferred'],
-            data:[1,2,3,4],
+            data:@json($coursesConstraintsLevel),
             })"
                  class="w-full">
                 <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
@@ -123,7 +123,7 @@
             <div x-data="courseTypes({
             element:$refs.element,
             labels:['Small', 'Medium', 'Large'],
-            data:[1,2,3],
+            data:@json($courseRoomTypes),
             })"
                  class="w-full">
                 <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
