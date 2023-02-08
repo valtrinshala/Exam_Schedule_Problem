@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Exports\CourseExport;
+use App\Services\FileContentData;
 use App\Traits\LivewireSortable;
 use Illuminate\Support\Collection;
 use Livewire\Component;
@@ -42,10 +43,9 @@ class Export extends Component
 
     public function updatedFile()
     {
-        $this->file->store('local');
-        session(['filePath' => $this->file->getRealPath()]);
-
         $data = json_decode(file_get_contents($this->file->getRealPath()), true);
+
+        (new FileContentData())->set($data);
 
         $curricula = $data['Curricula'];
         $this->constraints = $data['Constraints'];
@@ -82,6 +82,7 @@ class Export extends Component
 
         cache()->forget('courses');
         cache()->forget('columns');
+        (new FileContentData())->forget();
     }
 
     public function export()
@@ -149,7 +150,7 @@ class Export extends Component
                     'written_oral_specs_same_day' => $course['WrittenOralSpecs']['SameDay'] ?? '-',
                     'constraints_count' => $constraintsCount[$courseId] ?? 0,
                     'constraints_forbidden' => ($constraint['Level'] ?? false) == 'Forbidden' ? 'True' : 'False',
-                    'constraints_undesired' =>  ($constraint['Level'] ?? false) == 'Undesired' ? 'True' : 'False',
+                    'constraints_undesired' => ($constraint['Level'] ?? false) == 'Undesired' ? 'True' : 'False',
                     'constraints_preferred' => ($constraint['Level'] ?? false) == 'Preferred' ? 'True' : 'False',
 
                     'primary' => $primary,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Services\FileContentData;
 use Livewire\Component;
 
 class Charts extends Component
@@ -28,12 +29,11 @@ class Charts extends Component
 
     public function mount()
     {
-        $filepath = session('filePath');
-        $data = json_decode(file_get_contents($filepath), true);
+        $data = (new FileContentData())->get();
 
-        $this->constraints = $data['Constraints'];
-        $this->teachers = $data['Teachers'];
-        $this->courses = $data['Courses'];
+        $this->constraints = $data['Constraints'] ?? [];
+        $this->teachers = $data['Teachers'] ?? [];
+        $this->courses = $data['Courses'] ?? [];
 
         $this->mountCourseRoomTypes();
         $this->mountCoursesConstraintsLevel();
