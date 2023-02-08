@@ -42,36 +42,56 @@
 
             <div class="flex items-center gap-4 mt-5">
                 <div class="flex items-center gap-1">
-                    <div class="w-4 h-4 rounded bg-red-500"></div>
-                    <span>Small</span>
+                    <div class="w-4 h-4 rounded bg-blue-500"></div>
+                    <span>Written</span>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-orange-500"></div>
+                    <span>Written And Oral</span>
                 </div>
 
                 <div class="flex items-center gap-1">
                     <div class="w-4 h-4 rounded bg-red-500"></div>
-                    <span>Medium</span>
-                </div>
-
-                <div class="flex items-center gap-1">
-                    <div class="w-4 h-4 rounded bg-yellow-600"></div>
-                    <span>Large</span>
+                    <span>Oral</span>
                 </div>
             </div>
         </div>
 
         <div class="col-span-4 bg-white p-4 rounded-lg">
-            <h1 class="mb-4">Course Room Types</h1>
+            <h1 class="mb-4">Course Constraints Level</h1>
             <div x-data="courseTypes({
             element:$refs.element,
             labels:['Desired', 'Undesired', 'Forbidden', 'Preferred'],
-            data:@json($coursesConstraintsLevel),
+            data:[1,2,3,4],
             })"
                  class="w-full">
                 <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
             </div>
+            <div class="flex items-center text-sm gap-4 mt-5">
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-blue-500"></div>
+                    <span>Desired</span>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-red-500"></div>
+                    <span>Undesired</span>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-orange-500"></div>
+                    <span>Forbidden</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-yellow-500"></div>
+                    <span>Preferred</span>
+                </div>
+            </div>
         </div>
 
         <div class="col-span-4 bg-white p-4 rounded-lg">
-            <h1 class="mb-4">Course Room Types</h1>
+            <h1 class="mb-4">Course Exam Types</h1>
             <div x-data="courseTypes({
             element:$refs.element,
             labels:['Oral', 'Written', 'WrittenAndOral'],
@@ -80,14 +100,30 @@
                  class="w-full">
                 <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
             </div>
+            <div class="flex items-center gap-4 mt-5">
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-blue-500"></div>
+                    <span>Oral</span>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-orange-500"></div>
+                    <span>Written</span>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <div class="w-4 h-4 rounded bg-red-500"></div>
+                    <span>Written And Oral</span>
+                </div>
+            </div>
         </div>
 
         <div class="col-span-4 bg-white p-4 rounded-lg">
-            <h1 class="mb-4">Course Room Types</h1>
+            <h1 class="mb-4">Course Requested  Room Types</h1>
             <div x-data="courseTypes({
             element:$refs.element,
             labels:['Small', 'Medium', 'Large'],
-            data:@json($courseRoomTypes),
+            data:[1,2,3],
             })"
                  class="w-full">
                 <canvas style="height:400px" class="w-full" x-ref="element"></canvas>
@@ -95,7 +131,7 @@
 
             <div class="flex items-center gap-4 mt-5">
                 <div class="flex items-center gap-1">
-                    <div class="w-4 h-4 rounded bg-red-500"></div>
+                    <div class="w-4 h-4 rounded bg-blue-500"></div>
                     <span>Small</span>
                 </div>
 
